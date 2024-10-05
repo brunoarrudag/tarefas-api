@@ -1,7 +1,9 @@
 package com.tarefas.api.controller;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tarefas.api.model.Usuario;
@@ -53,6 +56,26 @@ public class UsuarioController {
     @DeleteMapping("/apagarUsuario/{id}")
     public String apagarUsuario(@PathVariable Long id) {
         return servUsuario.apagarUsuario(id);
+    }
+
+    @GetMapping("/fitroNome")
+    public ResponseEntity<List<Usuario>> pesquisarUsuarioNome(@RequestParam("nome") String nome) {
+       return ResponseEntity.ok().body(servUsuario.filtrarUsuarioPeloNome(nome));
+    }
+
+    @GetMapping("/fitroEmail")
+    public ResponseEntity<Optional<Usuario>> pesquisarUsuarioEmail(@RequestParam("email") String email) {
+       return ResponseEntity.ok().body(servUsuario.filtrarUsuarioPeloEmail(email));
+    }
+
+    @GetMapping("/fitroInativo")
+    public ResponseEntity<List<Usuario>> pesquisarUsuarioInativo() {
+       return ResponseEntity.ok().body(servUsuario.filtrarUsuarioInativo());
+    }
+
+    @GetMapping("/filtroDataNascimento")
+    public ResponseEntity<List<Usuario>> pesquisarTarefaTitulo(@RequestParam("dataInicio") LocalDate DataInicio, @RequestParam("dataFim") LocalDate DataFim) {
+       return ResponseEntity.ok().body(servUsuario.filtrarUsuarioPelaDataNascimento(DataInicio, DataFim));
     }
 
 }

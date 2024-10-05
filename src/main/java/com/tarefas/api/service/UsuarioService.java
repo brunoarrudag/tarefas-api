@@ -60,11 +60,16 @@ public class UsuarioService {
         return repoUsuario.findByNomeContainingIgnoreCase(nome);
     }
 
-    public List<Usuario> filtrarUsuarioPeloEmail(String email){
+    public Optional<Usuario> filtrarUsuarioPeloEmail(String email){
         return repoUsuario.findByEmail(email);
     }
 
     public List<Usuario> filtrarUsuarioPelaDataNascimento(LocalDate dataInicio, LocalDate dataFim){
         return repoUsuario.findByDataNascimentoBetween(dataInicio, dataFim);
     }
+
+    public List<Usuario> filtrarUsuarioInativo(){
+        return repoUsuario.findByInativoTrue();
+    }
+
 }
