@@ -1,4 +1,4 @@
-package com.tarefas.api;
+package com.tarefas.api.controller;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,13 +19,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tarefas.api.model.Tarefa;
+import com.tarefas.api.service.TarefaService;
 
 @RestController
 @RequestMapping("/tarefas")
-public class ControladorTarefa {
+public class TarefaController {
     
     @Autowired
-    ServicoTarefa servtarefa;
+    TarefaService servtarefa;
 
     @CrossOrigin
     @PostMapping("/cadastrarTarefa")

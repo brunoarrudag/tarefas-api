@@ -1,4 +1,4 @@
-package com.tarefas.api;
+package com.tarefas.api.service;
 
 import java.util.List;
 import java.util.Optional;
@@ -7,11 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.tarefas.api.model.Tarefa;
+import com.tarefas.api.repository.TarefaRepository;
 
 @Service
-public class ServicoTarefa {
+public class TarefaService {
     @Autowired
-    RepositorioTarefa repoTarefa;
+    TarefaRepository repoTarefa;
 
     public Tarefa CadastrarTarefa(Tarefa tarefa) {
         return repoTarefa.save(tarefa);

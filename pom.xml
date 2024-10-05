@@ -11,7 +11,7 @@
 	<groupId>com.tarefas.api</groupId>
 	<artifactId>tarefas-api</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>tarefas_api</name>
+	<name>tarefas-api</name>
 	<description>Demo project for Spring Boot</description>
 	<url/>
 	<licenses>
