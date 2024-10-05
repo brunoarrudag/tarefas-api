@@ -1,4 +1,4 @@
-package com.tarefas.tarefas_api;
+package com.tarefas.api;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.tarefas.api.model.Tarefa;
 
 @RestController
 @RequestMapping("/tarefas")

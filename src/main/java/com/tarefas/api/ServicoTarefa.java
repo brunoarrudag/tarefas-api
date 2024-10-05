@@ -1,10 +1,12 @@
-package com.tarefas.tarefas_api;
+package com.tarefas.api;
 
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.tarefas.api.model.Tarefa;
 
 @Service
 public class ServicoTarefa {
