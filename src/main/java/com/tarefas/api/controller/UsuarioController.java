@@ -69,7 +69,7 @@ public class UsuarioController {
     }
 
     @GetMapping("/fitroInativo")
-    public ResponseEntity<List<Usuario>> pesquisarUsuarioInativo() {
+    public ResponseEntity<List<UsuarioDTO>> pesquisarUsuarioInativo() {
        return ResponseEntity.ok().body(servUsuario.filtrarUsuarioInativo());
     }
 

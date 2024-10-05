@@ -76,8 +76,8 @@ public class UsuarioService {
         return repoUsuario.findByDataNascimentoBetween(dataInicio, dataFim).stream().map(usuario -> _converterParaUsuarioDTO(usuario)).toList();
     }
 
-    public List<Usuario> filtrarUsuarioInativo(){
-        return repoUsuario.findByInativoTrue();
+    public List<UsuarioDTO> filtrarUsuarioInativo(){
+        return repoUsuario.findByInativoTrue().stream().map(usuario -> _converterParaUsuarioDTO(usuario)).toList();
     }
 
     private UsuarioDTO _converterParaUsuarioDTO(Usuario usuario){
