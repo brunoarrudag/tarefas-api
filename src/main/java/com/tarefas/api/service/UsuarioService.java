@@ -1,12 +1,14 @@
 package com.tarefas.api.service;
 
 import java.time.LocalDate;
+import java.time.Period;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.tarefas.api.dto.UsuarioDTO;
 import com.tarefas.api.model.Usuario;
 import com.tarefas.api.repository.UsuarioRespository;
 
@@ -15,12 +17,12 @@ public class UsuarioService {
     @Autowired
     UsuarioRespository repoUsuario;
 
-    public Usuario cadastrarUsuario(Usuario usuario){
-        return repoUsuario.save(usuario);
+    public UsuarioDTO cadastrarUsuario(Usuario usuario){
+        return _converterParaUsuarioDTO(repoUsuario.save(usuario)) ;
     }
 
-    public List<Usuario> listarUsuario(){
-        return repoUsuario.findAll();
+    public List<UsuarioDTO> listarUsuario(){
+        return repoUsuario.findAll().stream().map(usuario -> _converterParaUsuarioDTO(usuario)).toList();
     }
 
     public Usuario listarUsuarioID(Long id){
@@ -56,20 +58,41 @@ public class UsuarioService {
         }
     }
 
-    public List<Usuario> filtrarUsuarioPeloNome(String nome){
-        return repoUsuario.findByNomeContainingIgnoreCase(nome);
+    public List<UsuarioDTO> filtrarUsuarioPeloNome(String nome){
+        return repoUsuario.findByNomeContainingIgnoreCase(nome).stream().map(usuario -> _converterParaUsuarioDTO(usuario)).toList();
     }
 
-    public Optional<Usuario> filtrarUsuarioPeloEmail(String email){
-        return repoUsuario.findByEmail(email);
+    public UsuarioDTO filtrarUsuarioPeloEmail(String email){
+        Optional<Usuario> usuario = repoUsuario.findByEmail(email);
+
+        if(usuario.isPresent()) {
+            return _converterParaUsuarioDTO(usuario.get());
+        }
+        
+        return null;
     }
 
-    public List<Usuario> filtrarUsuarioPelaDataNascimento(LocalDate dataInicio, LocalDate dataFim){
-        return repoUsuario.findByDataNascimentoBetween(dataInicio, dataFim);
+    public List<UsuarioDTO> filtrarUsuarioPelaDataNascimento(LocalDate dataInicio, LocalDate dataFim){
+        return repoUsuario.findByDataNascimentoBetween(dataInicio, dataFim).stream().map(usuario -> _converterParaUsuarioDTO(usuario)).toList();
     }
 
     public List<Usuario> filtrarUsuarioInativo(){
         return repoUsuario.findByInativoTrue();
     }
 
+    private UsuarioDTO _converterParaUsuarioDTO(Usuario usuario){
+        UsuarioDTO dto = new UsuarioDTO();
+        LocalDate dataAtual = LocalDate.now();
+        LocalDate dataNascimento = usuario.getDataNascimento();
+        Period period = Period.between(dataNascimento, dataAtual);
+
+        dto.setId(usuario.getId());
+        dto.setNome(usuario.getNome());
+        dto.setEmail(usuario.getEmail());
+
+        dto.setIdade(period.getDays());
+        dto.setStatus(usuario.getInativo() ? "INATIVO" : "ATIVO");
+
+        return dto;
+    }
 }

@@ -3,7 +3,6 @@ package com.tarefas.api.controller;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.tarefas.api.dto.UsuarioDTO;
 import com.tarefas.api.model.Usuario;
 import com.tarefas.api.service.UsuarioService;
 
@@ -28,7 +28,7 @@ public class UsuarioController {
     private UsuarioService servUsuario;
 
     @GetMapping("/listarUsuarios")
-    public ResponseEntity<List<Usuario>> listarUsuario() {
+    public ResponseEntity<List<UsuarioDTO>> listarUsuario() {
         return ResponseEntity.ok().body(servUsuario.listarUsuario());
     }
 
@@ -42,7 +42,7 @@ public class UsuarioController {
     }
     
     @PostMapping("/cadastrarUsuario")
-    public ResponseEntity<Usuario> caddastrarUsuario(@RequestBody Usuario usuario){
+    public ResponseEntity<UsuarioDTO> caddastrarUsuario(@RequestBody Usuario usuario){
         return ResponseEntity.status(HttpStatus.CREATED).body(servUsuario.cadastrarUsuario(usuario));
     }
 
@@ -59,12 +59,12 @@ public class UsuarioController {
     }
 
     @GetMapping("/fitroNome")
-    public ResponseEntity<List<Usuario>> pesquisarUsuarioNome(@RequestParam("nome") String nome) {
+    public ResponseEntity<List<UsuarioDTO>> pesquisarUsuarioNome(@RequestParam("nome") String nome) {
        return ResponseEntity.ok().body(servUsuario.filtrarUsuarioPeloNome(nome));
     }
 
     @GetMapping("/fitroEmail")
-    public ResponseEntity<Optional<Usuario>> pesquisarUsuarioEmail(@RequestParam("email") String email) {
+    public ResponseEntity<UsuarioDTO> pesquisarUsuarioEmail(@RequestParam("email") String email) {
        return ResponseEntity.ok().body(servUsuario.filtrarUsuarioPeloEmail(email));
     }
 
@@ -74,7 +74,7 @@ public class UsuarioController {
     }
 
     @GetMapping("/filtroDataNascimento")
-    public ResponseEntity<List<Usuario>> pesquisarTarefaTitulo(@RequestParam("dataInicio") LocalDate DataInicio, @RequestParam("dataFim") LocalDate DataFim) {
+    public ResponseEntity<List<UsuarioDTO>> pesquisarTarefaTitulo(@RequestParam("dataInicio") LocalDate DataInicio, @RequestParam("dataFim") LocalDate DataFim) {
        return ResponseEntity.ok().body(servUsuario.filtrarUsuarioPelaDataNascimento(DataInicio, DataFim));
     }
 
