@@ -1,12 +1,14 @@
 package com.tarefas.api.service;
 
 import java.time.LocalDate;
+import java.time.Period;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.tarefas.api.dto.TarefaDTO;
 import com.tarefas.api.model.Tarefa;
 import com.tarefas.api.repository.TarefaRepository;
 
@@ -15,12 +17,12 @@ public class TarefaService {
     @Autowired
     TarefaRepository repoTarefa;
 
-    public Tarefa cadastrarTarefa(Tarefa tarefa) {
-        return repoTarefa.save(tarefa);
+    public TarefaDTO cadastrarTarefa(Tarefa tarefa) {
+        return _converterParaTarefaDTO(repoTarefa.save(tarefa));
     }
 
-    public List<Tarefa> listarTarefa() {
-        return repoTarefa.findAll();
+    public List<TarefaDTO> listarTarefa() {
+        return repoTarefa.findAll().stream().map(tarefa -> _converterParaTarefaDTO(tarefa)).toList();
     }
 
     public Tarefa pesquisarTarefaID(Long id){
@@ -47,7 +49,7 @@ public class TarefaService {
     }
 
     public String apagarTarefa(Long id){
-        Tarefa tarefapesquisada = this.pesquisarTarefaID(id);
+        TarefaDTO tarefapesquisada = _converterParaTarefaDTO(this.pesquisarTarefaID(id));
         if(tarefapesquisada != null){
             repoTarefa.deleteById(id);
             return "Tarefa apagada com sucesso!";
@@ -56,11 +58,28 @@ public class TarefaService {
         }
     }
 
-    public List<Tarefa> filtrarTarefasPeloTitulo(String titulo){
-        return repoTarefa.findByTituloContainingIgnoreCase(titulo);
+    public List<TarefaDTO> filtrarTarefasPeloTitulo(String titulo){
+        return repoTarefa.findByTituloContainingIgnoreCase(titulo).stream().map(tarefa -> _converterParaTarefaDTO(tarefa)).toList();
     }
 
-    public List<Tarefa> filtrarTarefasPeloPrazo(LocalDate dataInicio, LocalDate dataFim){
-        return repoTarefa.findByPrazoBetween(dataInicio, dataFim);
+    public List<TarefaDTO> filtrarTarefasPeloPrazo(LocalDate dataInicio, LocalDate dataFim){
+        return repoTarefa.findByPrazoBetween(dataInicio, dataFim).stream().map(tarefa -> _converterParaTarefaDTO(tarefa)).toList();
     }
+
+    private TarefaDTO _converterParaTarefaDTO(Tarefa tarefa){
+        TarefaDTO dto = new TarefaDTO();
+        dto.setId(tarefa.getId());
+        dto.setTitulo(tarefa.getTitulo());
+        dto.setDescricao(tarefa.getDescricao());
+
+        LocalDate dataAtual = LocalDate.now();
+        LocalDate dataPrazo = tarefa.getPrazo();
+        
+        Period period = Period.between(dataAtual, dataPrazo);
+
+        dto.setQtdeDiasRestantes(period.getDays());
+
+        return dto;
+    }
+
 }

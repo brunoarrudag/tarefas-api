@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.tarefas.api.dto.TarefaDTO;
 import com.tarefas.api.model.Tarefa;
 import com.tarefas.api.service.TarefaService;
 
@@ -47,7 +48,7 @@ public class TarefaController {
     } */
 
     @GetMapping("/listar")
-    public List<Tarefa> listarTarefa() {
+    public List<TarefaDTO> listarTarefa() {
         return servtarefa.listarTarefa();
     }
 
@@ -85,12 +86,12 @@ public class TarefaController {
     }
 
     @GetMapping("/v2/fitrotitulo")
-    public ResponseEntity<List<Tarefa>> pesquisarTarefaTitulo(@RequestParam("titulo") String titulo) {
+    public ResponseEntity<List<TarefaDTO>> pesquisarTarefaTitulo(@RequestParam("titulo") String titulo) {
        return ResponseEntity.ok().body(servtarefa.filtrarTarefasPeloTitulo(titulo));
     }
 
     @GetMapping("/v2/filtroprazo")
-    public ResponseEntity<List<Tarefa>> pesquisarTarefaTitulo(@RequestParam("dataInicio") LocalDate DataInicio, @RequestParam("dataFim") LocalDate DataFim) {
+    public ResponseEntity<List<TarefaDTO>> pesquisarTarefaTitulo(@RequestParam("dataInicio") LocalDate DataInicio, @RequestParam("dataFim") LocalDate DataFim) {
        return ResponseEntity.ok().body(servtarefa.filtrarTarefasPeloPrazo(DataInicio, DataFim));
     }
 
