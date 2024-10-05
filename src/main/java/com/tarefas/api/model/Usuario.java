@@ -33,6 +33,6 @@ public class Usuario {
     public LocalDate dataNascimento;
 
     @Column(name="inativo", columnDefinition="boolean", nullable=false)
-    public Boolean inativo = false;
+    public Boolean inativo = Boolean.FALSE;
 
 }
